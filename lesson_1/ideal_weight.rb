@@ -2,7 +2,7 @@ print 'Ваше имя? '
 name = gets.chomp
 
 print 'Ваш рост? '
-height = Integer(gets.chomp)
+height = gets.chomp.to_i
 
 if (optimal_weight = (height - 110) * 1.15) <= 0
   puts "#{name}, Ваш вес уже оптимальный"
