@@ -9,8 +9,7 @@ year = gets.chomp.to_i
 
 days_mounths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-month_count = days_mounths.take(month - 1)
-day_count_month = month_count.sum
+day_count_month = days_mounths.take(month - 1).sum
 
 leap_year = 29 if (year % 4).zero? && !(year % 100).zero? || (year % 400).zero?
 
