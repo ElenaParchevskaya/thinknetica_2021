@@ -5,7 +5,7 @@ require_relative 'vagon_cargo'
 require_relative 'train'
 require_relative 'train_passenger'
 require_relative 'train_cargo'
-require_relative 'trains_actions'
+require_relative 'train_actions'
 require_relative 'route_actions'
 
 stations = []
