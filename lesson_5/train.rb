@@ -1,71 +1,79 @@
 class Train
+  attr_reader :speed, :vagons, :route, :id
+  attr_reader :previous_station, :current_station, :next_station
 
-  attr_accessor :speed, :vagons
-  attr_reader :type, :number
-
-  def initialize(number, type, vagons)
-    @number = number
-    @type = type
-    @vagons = vagons
+  def initialize(id)
+    @id = id
+    @vagons = []
     @speed = 0
-    @route = []
-    @railway_station
-  end
-
-  def speed_up(speed = 10)
-    self.speed += speed
   end
 
   def stop
-    self.speed = 0
+    @speed = 0
   end
 
-  def vagons_count
-    self.vagons
+  def attach_vagon(vagon)
+    conditions_check
+    @vagons << vagon if speed.zero?
   end
 
-  def vagon_add
-    self.vagons += 1 if self.speed == 0
+  def delet_vagon(vagon)
+    conditions_check
+    @vagons.delete(vagon) if speed.zero?
   end
 
-  def vagon_delete
-    self.vagons -= 1 if self.speed == 0 && !self.vagons.zero?
+  def add_route(route)
+    @route = route
+    @route.stations.first.train_in self
+    stations current_position
   end
 
-  def next_station
-    @route.stations[@route.stations.index(@railway_station) + 1]
-  end
-
-  def prev_station
-    unless @route.stations.index(@railway_station) - 1 == - 1
-      @route.stations[@route.stations.index(@railway_station) - 1]
+  def travel(direction)
+    if direction != 'forward' && direction != 'back'
+      puts "Пожалуйста, введите 'forward' или 'back'"
+    else
+      case direction
+        when 'forward'then index = current_position + 1
+        when 'back' then index = current_position - 1
+      end
+      move_train index
     end
   end
 
-  def add_route (route)
-    @route = route
-    @railway_station = @route.stations[0]
-    @railway_station.train_in(self)
+  private
+
+  # проверка скорости
+  def conditions_check
+    puts 'Первая остановка поезда' if speed != 0
   end
 
-  def route_forward
-    return unless next_station
-    @railway_station.train_out(self)
-    @railway_station = next_station
-    @railway_station.train_in(self)
+  # для метода Travel
+  def current_position
+    @route.stations.find_index { |station| station.trains.include?(self) }
   end
 
-  def route_backward
-    return unless prev_station
-    @railway_station.train_out(self)
-    @railway_station = prev_station
-    @railway_station.train_in(self)
+  def move_train(new_position)
+    if nil_or_negative? new_position
+      puts 'Это 1 или последня станция'
+    else
+      stations new_position
+      @route.stations[current_position].train_out(self)
+      @route.stations[new_position].train_in(self)
+    end
+  end
+  #установка станций после перемещения поезда
+  def stations(set)
+    @next_station = nil
+    @previous_station = nil
+    previous = set - 1
+    next_ensuing = set + 1
+    @previous_station = @route.stations[previous].name unless nil_or_negative?previous
+    @current_station = @route.stations[set].name
+    @next_station = @route.stations[next_ensuing].name unless nil_or_negative? next_ensuing
   end
 
-  def what_station
-    return if @route.stations.empty?
-    puts "Train at the station: #{@curr_station.name}"
-    puts "Previous station: #{prev_station ? prev_station.name : 'no station'}"
-    puts "The next station: #{next_station ? next_station.name : 'no station' }"
+  #  есть в массиве такой индекс или отрицательное число?
+  def nil_or_negative?(number)
+    @route.stations[number].nil? || number.negative?
   end
 end

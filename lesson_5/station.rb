@@ -1,6 +1,7 @@
+require_relative 'train'
 class Station
 
-  attr_reader :name
+  attr_reader :name, :trains
 
   def initialize(name)
     @name = name
@@ -8,23 +9,13 @@ class Station
   end
 
   def train_in(train)
+    puts "Поезд #{train.id} приехал на станицию #{@name}"
     @trains << train
   end
 
   def train_out(train)
+    puts "Поезд #{train.id} уехал со станции #{@name}"
     @trains.delete(train)
   end
 
-  def output
-    return if @trains.empty?
-    puts "Trains at the station  #{@name}:"
-    @trains.each do |train|
-      puts "Train number: #{train.number}, type: #{train.type}"
-    end
-  end
-
-  def output_type(type)
-    number_type = @trains.count{|train| train.type == type}
-    puts "Train type #{type} at the station: #{number_type}"
-  end
 end

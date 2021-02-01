@@ -1,31 +1,28 @@
-class Route
+require_relative 'station'
 
-  attr_accessor :stations
+class Route
+  attr_reader :stations, :from_station, :to_station
 
   def initialize(from_station, to_station)
-    @stations = [from_station, to_station]
+     @from_station = from_station
+     @to_station = to_station
+     @stations = [from_station, to_station]
   end
 
   def add_station(station)
-    stations.insert(-2, station)
+    @stations.insert(-2, station)
   end
 
-  def first_station?(station)
+  def from_station?(station)
     station != stations.first
   end
 
-  def last_station?(station)
+  def to_station?(station)
     station != stations.last
   end
 
-  def dellet_station(station)
-    stations.delete(station) if first_station?(station) && last_station?(station)
-  end
-
-  def list
-    self.stations.each.with_index(1) do |station, index|
-      puts "#{index}.  #{station.name}"
-    end
+  def delet_station(station)
+    @stations.delete(station) if from_station?(station) && to_station?(station)
   end
 
 end
