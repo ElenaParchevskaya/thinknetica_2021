@@ -6,12 +6,16 @@ require_relative 'train_passenger'
 require_relative 'train_cargo'
 require_relative 'station'
 require_relative 'route'
-require_relative 'station_actions'
+# require_relative 'station_actions'
 
 class Interface
-  stations = []
-  trains = []
-  routes = []
+  attr_reader  :stations,  :routes,  :trains
+
+  def initialize
+    @stations = []
+    @routes = []
+    @trains = []
+  end
 
   def start
     loop do
@@ -35,7 +39,7 @@ class Interface
     end
   end
 
-
+  private
   def station_actions(stations)
     loop do
       puts '==========================================='
