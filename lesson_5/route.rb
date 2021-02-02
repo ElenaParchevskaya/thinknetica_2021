@@ -4,9 +4,9 @@ class Route
   attr_reader :stations, :from_station, :to_station
 
   def initialize(from_station, to_station)
-     @from_station = from_station
-     @to_station = to_station
-     @stations = [from_station, to_station]
+    @from_station = from_station
+    @to_station = to_station
+    @stations = [from_station, to_station]
   end
 
   def add_station(station)
@@ -24,5 +24,4 @@ class Route
   def delet_station(station)
     @stations.delete(station) if from_station?(station) && to_station?(station)
   end
-
 end

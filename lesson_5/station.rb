@@ -1,6 +1,6 @@
 require_relative 'train'
-class Station
 
+class Station
   attr_reader :name, :trains
 
   def initialize(name)
@@ -17,5 +17,4 @@ class Station
     puts "Поезд #{train.id} уехал со станции #{@name}"
     @trains.delete(train)
   end
-
 end

@@ -1,7 +1,6 @@
 require_relative 'vagon'
 
 class VagonPassenger < Vagon
-
   attr_reader :seats, :type
   attr_accessor :wifi
 
