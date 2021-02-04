@@ -2,16 +2,17 @@ require_relative 'manufacturer_company'
 require_relative 'instance_counter'
 
 class Train
+  include ManufacturerCompany
+  include InstanceCounter
+
+  attr_reader :speed, :vagons, :route, :id
+  attr_reader :previous_station, :current_station, :next_station
+
   @@trains = {}
 
   def self.find(search)
     @@trains[search.to_sym]
   end
-
-  include ManufacturerCompany
-  include InstanceCounter
-  attr_reader :speed, :vagons, :route, :id
-  attr_reader :previous_station, :current_station, :next_station
 
   def initialize(id)
     @id = id
