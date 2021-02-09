@@ -1,6 +1,11 @@
 require_relative 'station'
+require_relative 'module_functions'
+require_relative 'validation_error'
 
 module StationAction
+  include InstanceCounter
+  include Functions
+
   private
 
   def station_actions(stations)
@@ -27,7 +32,7 @@ module StationAction
         station = Station.new name
         stations << station
         puts "Создана станция #{station.name}"
-      rescue StandardError => e
+      rescue ValidationError => e
         puts 'Станция не создана'
         puts e.message
       end
@@ -36,7 +41,7 @@ module StationAction
   end
 
   def list_stations(stations)
-    puts 'Станций нет' if stations.empty? #СТАНЦИЙ НЕТ
+    puts 'Станций нет' if stations.empty?
     stations.each_with_index  do |station, index|
       puts "#{index + 1}. станция #{station.name}, поезда на станции:"
       station.trains.each { |train| puts "Поезд номер #{train.id}" }

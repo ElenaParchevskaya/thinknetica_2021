@@ -1,6 +1,7 @@
 require_relative 'manufacturer_company'
 require_relative 'instance_counter'
 require_relative 'module_functions'
+require_relative 'validation_error'
 
 class Train
   include ManufacturerCompany
@@ -64,9 +65,8 @@ class Train
   protected
 
   def validate!
-    raise ERRORIDLENGTH if @id.gsub('-','').length > 5
-    raise ERRORIDFORMAT if @id !~ IDFORMAT
-    raise ERRORIDFORMAT if train.empty?
+    raise ValidationError, ERRORIDLENGTH if @id.gsub('-','').length > 5
+    raise ValidationError, ERRORIDFORMAT if @id !~ IDFORMAT
   end
 
   private

@@ -3,6 +3,8 @@ require_relative 'train_cargo'
 require_relative 'vagons_actions'
 require_relative 'route_actions'
 require_relative 'train'
+require_relative 'module_functions'
+require_relative 'validation_error'
 
 module TrainAction
   private
@@ -51,7 +53,7 @@ module TrainAction
         train = TrainCargo.new(id) if type.to_i == 2
         trains << train
         puts "Создан поезд #{id}"
-      rescue StandardError => e
+      rescue ValidationError => e
         puts 'Поезд не создан'
         puts e.message
       end

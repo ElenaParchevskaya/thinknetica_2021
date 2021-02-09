@@ -41,7 +41,7 @@ module RouteAction
   end
 
   def list_routes(routes)
-    puts "Машрутов нет" if stations.empty? # НЕТ МАРШРУТОВ
+    puts 'Машрутов нет' if stations.empty?
     routes.each_with_index do |route, index|
       puts "#{index + 1}. маршрут #{route.from_station.name} - #{route.to_station.name}"
       puts 'Всего станций в маршруте:'

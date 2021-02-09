@@ -1,6 +1,7 @@
 require_relative 'station'
 require_relative 'instance_counter'
 
+
 class Route
   include InstanceCounter
 
@@ -27,11 +28,5 @@ class Route
 
   def delet_station(station)
     @stations.delete(station) if from_station?(station) && to_station?(station)
-  end
-
-  protected
-
-  def validate!
-    raise ERRORSTATION if station < 2
   end
 end

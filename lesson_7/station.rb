@@ -1,6 +1,7 @@
 require_relative 'train'
 require_relative 'instance_counter'
 require_relative 'module_functions'
+require_relative 'validation_error'
 
 class Station
   include InstanceCounter
@@ -37,10 +38,8 @@ class Station
     @trains.delete(train)
   end
 
-  protected
-
   def validate!
-    raise ERRORNAMEFORMAT if @name !~ RUSNAME
-    raise ERRORNAMELENGTH if @name.length < 2
+    raise ValidationError, ERRORNAMEFORMAT if @name !~ RUSNAME
+    raise ValidationError, ERRORNAMELENGTH if @name.length < 2
   end
 end

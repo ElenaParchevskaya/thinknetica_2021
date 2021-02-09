@@ -7,8 +7,8 @@ require_relative 'trains_actions'
 module VagonAction
   private
 
-  def vagons_actions(trains, operation) # нужно исправить add и delet + вместо порядкого номера ввод просто номера поезда
-    puts 'Поездов нет' if trains.empty? # НЕТ ПОЕЗДОВ
+  def vagons_actions(trains, operation)
+    puts 'Поездов нет' if trains.empty?
     puts 'Выберите поезд из списка поездов:'
     list_trains(trains)
     puts 'Введите номер поезда для добавления/удаления вагона'
