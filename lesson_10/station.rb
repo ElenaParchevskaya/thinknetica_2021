@@ -11,8 +11,8 @@ class Station
   include Validation
 
   NAMEFORMAT = /^[a-яa-z0-9\-, ]+$/i.freeze
-  ERRORNAMELENGTH = 'длина названия должна быть не меньшу 2 букв'.freeze
-  ERRORNAMEFORMAT = 'название должно состоять из кириллицы (а-я)'.freeze
+  ERRORNAMELENGTH = 'длина названия должна быть не меньше 2 букв'.freeze
+  ERRORNAMEFORMAT = 'Некорректное название'.freeze
 
   attr_reader :trains, :name
 
@@ -57,7 +57,7 @@ class Station
   protected
 
   def validate_station
-    raise ValidationError, ERRORNAMEFORMAT if @name !~ NAMEFORMAT
+    raise ValidationError, ERRORNAMEFORMAT unless validate! name, :format, NAMEFORMAT
     raise ValidationError, ERRORNAMELENGTH if @name.length < 2
   end
 end

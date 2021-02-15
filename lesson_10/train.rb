@@ -1,8 +1,8 @@
 require_relative 'validation_error'
-require_relative 'accessors'
 require_relative 'functions'
 require_relative 'instance_counter'
 require_relative 'producer'
+require_relative 'accessors'
 require_relative 'validation'
 
 class Train
@@ -86,8 +86,9 @@ class Train
   protected
 
   def validate_train
+    raise ValidationError, 'Пустой номер' unless validate! @number, :presence
     raise ValidationError, ERRORIDLENGTH if @number.gsub('-', '').length > 5
-    raise ValidationError, ERRORIDFORMAT if @number !~ IDFORMAT
+    raise ValidationError, ERRORIDFORMAT unless validate! @number, :format, IDFORMAT
     raise ValidationError, 'Некорректное количество вагонов' if num_carriages < 1
   end
 end
