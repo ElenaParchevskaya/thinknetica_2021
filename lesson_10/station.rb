@@ -11,10 +11,13 @@ class Station
   include Validation
 
   NAMEFORMAT = /^[a-яa-z0-9\-, ]+$/i.freeze
-  ERRORNAMELENGTH = 'длина названия должна быть не меньше 2 букв'.freeze
-  ERRORNAMEFORMAT = 'Некорректное название'.freeze
+  # ERRORNAMELENGTH = 'длина названия должна быть не меньше 2 букв'.freeze
+  # ERRORNAMEFORMAT = 'Некорректное название'.freeze
 
   attr_reader :trains, :name
+
+  validate :name, :presence
+  validate :name, :format, NAMEFORMAT
 
   @@stations = []
 
@@ -24,7 +27,7 @@ class Station
 
   def initialize(name)
     @name = name
-    validate_station
+    validate!
     @trains = []
     register_instance
     @@stations << self
@@ -53,11 +56,11 @@ class Station
   def each_train
     @trains.each { |train| yield(train) }
   end
-
-  protected
-
-  def validate_station
-    raise ValidationError, ERRORNAMEFORMAT unless validate! name, :format, NAMEFORMAT
-    raise ValidationError, ERRORNAMELENGTH if @name.length < 2
-  end
+  #
+  # protected
+  #
+  # def validate_station
+  #   raise ValidationError, ERRORNAMEFORMAT unless validate! name, :format, NAMEFORMAT
+  #   raise ValidationError, ERRORNAMELENGTH if @name.length < 2
+  # end
 end

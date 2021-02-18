@@ -1,22 +1,47 @@
+require_relative 'validation_error'
+
 module Validation
-  def self.validate(name, type, *args)
-    public_send("validate_#{type}".to_sym, name, args)
+  def self.included(base)
+    base.extend ClassMethods
+    base.include InstanceMethods
   end
 
-  def self.validate_presence(name, args)
-    name && name != ''
+  module ClassMethods
+    attr_accessor :validations
+
+    def validate(name, validation_type, option = nil)
+      @validations ||= []
+      @validations << { attr: name, type: validation_type, option: option }
+    end
   end
 
-  def self.validate_format(name, args)
-    format = args[0]
-    name =~ format
-  end
+  module InstanceMethods
+    def validate!
+      self.class.validations.each do |validation|
+        validation_method = "validate_#{validation[:type]}".to_sym
+        attribute = instance_variable_get("@#{validation[:attr]}")
+        option = validation[:option]
+        send(validation_method, attribute, option)
+      end
+    end
 
-  def self.validate_type(name, args)
-    name.class = args[0]
-  end
+    def valid?
+      validate!
+        true
+      rescue ValidationError
+        false
+    end
 
-  def validate!(name, type, *args)
-    Validation.validate(name, type, *args)
+    def validate_presence(attribute, _option)
+      raise  ValidationError, 'Не может быть пустым 'if attribute.nil? || attribute.to_s.empty? || attribute == 0
+    end
+
+    def validate_format(attribute, format)
+      raise  ValidationError, 'Неверный формат значения' if attribute !~ format
+    end
+
+    def validate_type(attribute, class_of)
+      raise  ValidationError, 'Не подходящий класс объекта' unless attribute.is_a?(class_of)
+    end
   end
 end

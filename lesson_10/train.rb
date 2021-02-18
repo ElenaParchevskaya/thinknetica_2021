@@ -13,12 +13,13 @@ class Train
   include Validation
 
   IDFORMAT = /^([а-я]|\d){3}-*([а-я]|\d){2}$/i.freeze
-  ERRORIDLENGTH = 'Длина номера не должна превышать 5 цифр/букв(крилллица)'.freeze
-  ERRORIDFORMAT = 'Не верный формат, заполните по формату: ххх-xx, где - х любая цифра/буква(крилллица)'.freeze
-  ERRORTRAINO = 'Поездов нет'.freeze
+  # ERRORIDFORMAT = 'Не верный формат, заполните по формату: ххх-xx, где - х любая цифра/буква(крилллица)'.freeze
 
   attr_accessor_with_history :speed
   attr_reader :carriages, :number, :type, :num_carriages
+
+  validate :number, :presence
+  validate :number, :format, IDFORMAT
 
   @@trains = {}
 
@@ -29,7 +30,7 @@ class Train
   def initialize(number, num_carriages)
     @number = number
     @num_carriages = num_carriages
-    validate_train
+    validate!
     register_instance
     @@trains[number] = self
   end
@@ -83,12 +84,4 @@ class Train
     @carriages.each.with_index(1) { |carriage, i| yield(carriage, i) }
   end
 
-  protected
-
-  def validate_train
-    raise ValidationError, 'Пустой номер' unless validate! @number, :presence
-    raise ValidationError, ERRORIDLENGTH if @number.gsub('-', '').length > 5
-    raise ValidationError, ERRORIDFORMAT unless validate! @number, :format, IDFORMAT
-    raise ValidationError, 'Некорректное количество вагонов' if num_carriages < 1
-  end
 end

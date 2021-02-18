@@ -37,7 +37,8 @@ module StationMenu
     stations.each { |station| return false if station.name == station_name }
     @stations << Station.new(station_name)
   rescue ValidationError => e
-    puts "Возникла ошибка #{e.message}. Cтанция не создана."
+    puts e.message
+    puts 'Возникла ошибка. Станция не создана.'
   end
 
   def station_list

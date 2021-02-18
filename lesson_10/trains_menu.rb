@@ -8,12 +8,14 @@ require_relative 'route_menu'
 require_relative 'station_menu'
 require_relative 'functions'
 require_relative 'validation_error'
+require_relative 'validation'
 
 module TrainMenu
   include InstanceCounter
   include Functions
   include RouteMenu
   include StationMenu
+  include Validation
 
   private
 
@@ -83,7 +85,7 @@ module TrainMenu
 
   def train_create_cargo(train_number = nil, num_carriages = nil)
     if train_number.nil?
-      print 'Создание грузового поезда. Введите номер:'
+      print 'Создание грузового поезда. Введите номер (по формату: ххх-xx)   '
       train_number = gets.chomp
     end
     if num_carriages.nil?
@@ -92,12 +94,13 @@ module TrainMenu
     end
     @trains << TrainCargo.new(train_number, num_carriages)
   rescue ValidationError => e
-    puts "Возникла ошибка #{e.message}. Поезд не создан."
+    puts e.message
+    puts 'Возникла ошибка. Поезд не создан.'
   end
 
   def train_create_passenger(train_number = nil, num_carriages = nil)
     if train_number.nil?
-      print '============  Создание пассажирского поезда. Введите номер:'
+      print 'Создание пассажирского поезда. Введите номер (по формату: ххх-xx)   '
       train_number = gets.chomp
     end
     if num_carriages.nil?
@@ -106,7 +109,8 @@ module TrainMenu
     end
     @trains << TrainPassenger.new(train_number, num_carriages)
   rescue ValidationError => e
-    puts "Возникла ошибка #{e.message}. Поезд не создан."
+    puts e.message
+    puts 'Возникла ошибка. Поезд не создан.'
   end
 
   def train_set_route(train, route = nil)
